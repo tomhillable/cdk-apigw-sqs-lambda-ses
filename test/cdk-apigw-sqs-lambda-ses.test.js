@@ -32,4 +32,27 @@ describe("In the output stack", () => {
       });
     });
   });
+
+  describe("the API", () => {
+    test("API accepts POST request and forwards to AWS service (SQS)", () => {
+      template.hasResourceProperties("AWS::ApiGateway::Method", {
+        HttpMethod: "POST",
+        Integration: { Type: "AWS" },
+      });
+    });
+
+    test("API has /email path part", () => {
+      template.hasResourceProperties("AWS::ApiGateway::Resource", {
+        PathPart: "email",
+      });
+    });
+
+    test("API has input validation", () => {
+      template.hasResourceProperties("AWS::ApiGateway::Model", {});
+    });
+
+    test("API has API key", () => {
+      template.hasResourceProperties("AWS::ApiGateway::ApiKey", {});
+    });
+  });
 });
